@@ -1,8 +1,0 @@
-global:
-  bucket_endpoint_url: ""
-  bucket_region_name: ""
-  bucket_name: ""
-  bucket_endpoint_arn: ""
-  bucket_account_no: ""
-  bucket_secret_key: ""
-  bucket_access_key: ""  
