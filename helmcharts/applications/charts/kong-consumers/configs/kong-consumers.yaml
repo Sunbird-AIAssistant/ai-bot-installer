@@ -1,0 +1,51 @@
+{{- $randomString := .Values.global.random_string -}}
+{{- if and (ge (len $randomString) 12) (le (len $randomString) 24) -}}
+kong_consumers:
+  - username: mobile_admin
+    groups: {{ .Values.mobile_admin_groups | toYaml | nindent 4 }}
+    state: present
+    key: mobile_admin
+    secret: mobile_admin{{ $randomString }}
+    algorithm: HS256
+    print_credentials: true
+  - username: mobile_app
+    groups: {{ .Values.mobile_app_groups | toYaml | nindent 4 }}
+    state: present
+    key: mobile_app
+    secret: mobile_app{{ $randomString }}
+    algorithm: HS256
+    print_credentials: true
+  - username: mobile_device
+    groups: {{ .Values.mobile_device_groups | toYaml | nindent 4 }}
+    state: present
+    key: mobile_device
+    secret: mobile_device{{ $randomString }}
+    algorithm: HS256
+    print_credentials: true
+  - username: website_user
+    groups: {{ .Values.website_user_groups | toYaml | nindent 4 }}
+    state: present
+    key: website_user
+    secret: website_user{{ $randomString }}
+    algorithm: HS256
+    print_credentials: true
+  - username: whatsapp_user
+    groups: {{ .Values.whatsapp_user_groups | toYaml | nindent 4 }}
+    state: present
+    key: whatsapp_user
+    secret: whatsapp_user{{ $randomString }}
+    algorithm: HS256
+    print_credentials: true
+  - username: servetel_user
+    groups: {{ .Values.servetel_user_groups | toYaml | nindent 4 }}
+    state: present
+    key: servetel_user
+    secret: servetel_user{{ $randomString }}
+    algorithm: HS256
+    print_credentials: true
+{{- if .Values.additional_consumers -}}
+{{ .Values.additional_consumers | toYaml | nindent 2 }}
+{{- end -}}
+{{- else -}}
+{{ fail "random_string length must be between 12 and 24 characters" -}}
+{{- end -}}

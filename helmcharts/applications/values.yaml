@@ -1,0 +1,60 @@
+provisioningAnnotations: &provisioningAnnotations
+  "helm.sh/hook-weight": "-4"
+
+postgresql: &postgresql
+  enabled: true
+  image:
+    repository: bitnami/postgresql
+    tag: 11.14.0-debian-10-r49
+  fullnameOverride: postgresql
+  host: postgresql
+  port: 5432
+  postgresqlUsername: postgres
+  postgresqlPassword: postgres
+  commonAnnotations:
+    "helm.sh/hook-weight": "-5"
+  provisioning:
+    annotations: *provisioningAnnotations
+  persistence:
+    size: 25Gi
+  databases:
+  - name: "kong"
+
+redis: &redis
+  enabled: true
+  nameOverride: "redis"
+  fullnameOverride: "redis"
+  auth:
+    enabled: false
+  host: "redis-master"
+  port: 6379
+  commonAnnotations:
+    "helm.sh/hook-weight": "-5"
+  replica:
+    replicaCount: 0
+  master:
+    persistence:
+      size: 25Gi
+
+global:
+  postgresql: *postgresql
+  redis: *redis
+  openai_baseurl: "https://api.openai.com/v1"
+  openai_version: "3.5"
+  gpt_model: ""
+  bhasini_endpoint_url: ""
+  bhasini_api_key: ""
+  bucket_endpoint_url: ""
+  bucket_region_name: ""
+  bucket_name: ""
+  bucket_secret_key: ""
+  bucket_access_key: ""
+  marqo_index_name: "index1"
+  marqo_url: "http://marqo:8882"
+  environment: "dev"
+  telegram_base_url: ""
+  telegram_bot_name: ""
+  telegram_bot_token: ""
+  token: ""
+  botName: ""
+  upstream: ""

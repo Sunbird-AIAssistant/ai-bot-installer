@@ -1,0 +1,137 @@
+nameOverride: ""
+fullnameOverride: ""
+
+replicaCount: 1
+
+image:
+  repository: dubea/telegram-unified
+  tag: "latest"
+  pullPolicy: Always
+  pullSecrets: []
+
+podAnnotations: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1001
+  fsGroup: 1001
+
+log_level: "INFO"
+concurrent_updates: 256
+pool_timeout: 30
+connection_pool_size: 1000
+supported_languages: en,bn,gu,hi,kn,ml,mr,or,pa,ta,te
+telegram_base_url: ""
+uvicorn_workers: 4
+connect_timeout: 300
+read_timeout: 15
+write_time_out: 10
+activity_api_base_url: "http://activitysakhi:8080"
+story_api_base_url: "http://storysakhi-service:8000"
+
+
+redis: &redis
+  host: redis-master
+  port: 6379
+  index: 1
+
+global:
+  environment: "dev"
+  redis: *redis
+  telegram_base_url: ""
+  telegram_bot_name: ""
+  telegram_bot_token: ""
+
+securityContext: {}
+  # readOnlyRootFilesystem: false
+  # capabilities:
+  #   drop:
+  #   - ALL
+
+service:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 8000
+      targetPort: 8000
+
+ingress:
+  enabled: false
+  annotations: {}
+  hosts:
+    - host: chart-example.local
+      paths:
+      - /
+
+resources: {}
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 80
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 80
+
+livenessProbe: {}
+# Example:
+# livenessProbe:
+#   httpGet:
+#     path: "/healthcheck"
+#     port: 8080
+#   initialDelaySeconds: 5
+#   periodSeconds: 500
+
+readinessProbe: {}
+# Example:
+# readinessProbe:
+#   httpGet:
+#     path: "/healthcheck"
+#     port: 8080
+#   initialDelaySeconds: 5
+#   periodSeconds: 500
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+configmap:
+  enabled: true
+  mountPath: /config
+
+serviceAccount:
+  create: true
+  name: ""
+
+serviceMonitor:
+  enabled: false
+  interval: 30s
+  scrapeTimeout: 10s
+  labels: {} # additional labels e.g. release: prometheus
+  honorLabels: true
+  jobLabel: "app.kubernetes.io/name"
+
+# Example values.yaml structure
+initContainers: {}
+  # - name: init-myservice
+  #   image: busybox:1.28
+  #   command: ['sh', '-c', "until nslookup kubernetes.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done"]
+
+sidecars: {}
+  # - name: log-reader # Sidecar container
+  #   image: busybox # Use another busybox image
+  #   command: ["/bin/sh"] # Override the default command
+  #   args: ["-c", "tail -f /var/log/app.log"] # Run a shell script that tails the log file
+
+opa:
+  enabled: false

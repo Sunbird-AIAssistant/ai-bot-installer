@@ -1,0 +1,259 @@
+---
+kong_apis:
+- name: storySakhiQuery
+  plugins:
+  - name: cors
+  - name: jwt
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - config.whitelist:
+    - ssQuery
+    name: acl
+  - config.hour: "{{ .Values.medium_rate_limit_per_hour }}"
+    config.limit_by: credential
+    config.policy: local
+    name: rate-limiting
+  - config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+    name: request-size-limiting
+  strip_uri: true
+  upstream_url: "{{ .Values.story_sakhi_service_url }}/v1/query_rstory"
+  uris: "/storybot/v1/query"
+
+- name: activitySakhiQuery
+  plugins:
+  - name: cors
+  - name: jwt
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - config.whitelist:
+    - asQuery
+    name: acl
+  - config.hour: "{{ .Values.medium_rate_limit_per_hour }}"
+    config.limit_by: credential
+    config.policy: local
+    name: rate-limiting
+  - config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+    name: request-size-limiting
+  strip_uri: true
+  upstream_url: "{{ .Values.activity_sakhi_service_url }}/v1/query"
+  uris: "/activitybot/v1/query"
+
+- name: sakhiUtilityContext
+  plugins:
+  - name: cors
+  - name: jwt
+  - config.whitelist:
+    - suContext
+    name: acl
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - config.hour: "{{ .Values.medium_rate_limit_per_hour }}"
+    config.limit_by: credential
+    config.policy: local
+    name: rate-limiting
+  - config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+    name: request-size-limiting
+  strip_uri: true
+  upstream_url: "{{ .Values.sakhi_utility_service_url }}/v1/context"
+  uris: "/aiutility/v1/context"
+
+- name: sakhiUtilityTranslation
+  plugins:
+  - name: cors
+  - name: jwt
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - config.whitelist:
+    - suTranslation
+    name: acl
+  - config.hour: "{{ .Values.medium_rate_limit_per_hour }}"
+    config.limit_by: credential
+    config.policy: local
+    name: rate-limiting
+  - config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+    name: request-size-limiting
+  strip_uri: true
+  upstream_url: "{{ .Values.sakhi_utility_service_url }}/v1/translation"
+  uris: "/aiutility/v1/translation"
+
+- name: ivrsMedia
+  plugins:
+  - name: cors
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - config.hour: "{{ .Values.medium_rate_limit_per_hour }}"
+    config.limit_by: credential
+    config.policy: local
+    name: rate-limiting
+  - config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+    name: request-size-limiting
+  strip_uri: true
+  upstream_url: "{{ .Values.ivrs_service_url }}/media"
+  uris: "/ivrs/v1/media"
+
+- name: registerMobileApp
+  plugins:
+  - name: cors
+  - name: jwt
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - config.whitelist:
+    - appRegister
+    name: acl
+  - config.hour: "{{ .Values.medium_rate_limit_per_hour }}"
+    config.limit_by: credential
+    config.policy: local
+    name: rate-limiting
+  - config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+    name: request-size-limiting
+  strip_uri: true
+  upstream_url: "{{ .Values.adminutil_service_url }}/v1/consumer/mobile_app/credential/register"
+  uris: "/registerMobile"
+
+- name: registerMobileDevice
+  plugins:
+  - name: cors
+  - name: jwt
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - config.whitelist:
+    - deviceRegister
+    name: acl
+  - config.hour: "{{ .Values.medium_rate_limit_per_hour }}"
+    config.limit_by: credential
+    config.policy: local
+    name: rate-limiting
+  - config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+    name: request-size-limiting
+  strip_uri: true
+  upstream_url: "{{ .Values.adminutil_service_url }}/v1/consumer/mobile_device/credential/register"
+  uris: "/registerMobileDevice"
+
+- name: contentConfigRead
+  plugins:
+  - name: cors
+  - name: jwt
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - config.whitelist:
+    - configRead
+    name: acl
+  - config.hour: "{{ .Values.medium_rate_limit_per_hour }}"
+    config.limit_by: credential
+    config.policy: local
+    name: rate-limiting
+  - config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+    name: request-size-limiting
+  strip_uri: true
+  upstream_url: "{{ .Values.content_service_url }}/v1/config/read"
+  uris: "/content/v1/config/read"
+
+- name: contentPageSearch
+  plugins:
+  - name: cors
+  - name: jwt
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - config.whitelist:
+    - pageSearch
+    name: acl
+  - config.hour: "{{ .Values.medium_rate_limit_per_hour }}"
+    config.limit_by: credential
+    config.policy: local
+    name: rate-limiting
+  - config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+    name: request-size-limiting
+  strip_uri: true
+  upstream_url: "{{ .Values.content_service_url }}/v1/page/search"
+  uris: "/content/v1/page/search"
+
+- name: contentSearch
+  plugins:
+  - name: cors
+  - name: jwt
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - config.whitelist:
+    - contentSearch
+    name: acl
+  - config.hour: "{{ .Values.medium_rate_limit_per_hour }}"
+    config.limit_by: credential
+    config.policy: local
+    name: rate-limiting
+  - config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+    name: request-size-limiting
+  strip_uri: true
+  upstream_url: "{{ .Values.content_service_url }}/v1/content/search"
+  uris: "/content/v1/content/search"
+
+- name: telemetry
+  plugins:
+  - name: cors
+  - name: jwt
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - config.whitelist:
+    - telemetryCreate
+    name: acl
+  - config.hour: "{{ .Values.medium_rate_limit_per_hour }}"
+    config.limit_by: credential
+    config.policy: local
+    name: rate-limiting
+  - config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+    name: request-size-limiting
+  strip_uri: true
+  upstream_url: "{{ .Values.telemetry_service_url }}/v1/telemetry"
+  uris: "/telemetry/v1"
+
+- name: telemetryMetric
+  plugins:
+  - name: cors
+  - name: jwt
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - config.whitelist:
+    - telemetryMetric
+    name: acl
+  - config.hour: "{{ .Values.medium_rate_limit_per_hour }}"
+    config.limit_by: credential
+    config.policy: local
+    name: rate-limiting
+  - config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+    name: request-size-limiting
+  strip_uri: true
+  upstream_url: "{{ .Values.telemetry_service_url }}/v1/metrics"
+  uris: "/telemetry/v1/metrics"
+
+- name: telemetryDashboard
+  plugins:
+  - name: cors
+  - name: jwt
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - config.whitelist:
+    - telemetryMetric
+    name: acl
+  - config.hour: "{{ .Values.medium_rate_limit_per_hour }}"
+    config.limit_by: credential
+    config.policy: local
+    name: rate-limiting
+  - config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+    name: request-size-limiting
+  strip_uri: true
+  upstream_url: "{{ .Values.telemetry_service_url }}/v1/dashboard/token"
+  uris: "/telemetry/v1/dashboard/token"
+
+- name: telegramWebhook
+  plugins:
+  - name: cors
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - config.hour: "{{ .Values.medium_rate_limit_per_hour }}"
+    config.limit_by: credential
+    config.policy: local
+    name: rate-limiting
+  - config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+    name: request-size-limiting
+  strip_uri: true
+  upstream_url: "{{ .Values.unified_telegram_service_url }}/telegram"
+  uris: "/webhook/telegram"
+
+- name: whatsappWebhook
+  plugins:
+  - name: cors
+  - {{ .Values.statsd_pulgin | toYaml | nindent 4 | trim }}
+  - config.hour: "{{ .Values.medium_rate_limit_per_hour }}"
+    config.limit_by: credential
+    config.policy: local
+    name: rate-limiting
+  - config.allowed_payload_size: "{{ .Values.small_request_size_limit }}"
+    name: request-size-limiting
+  strip_uri: true
+  upstream_url: "{{ .Values.whatsapp_bot_service_url }}/gupshup/webhook"
+  uris: "/whatsapp/webhook"

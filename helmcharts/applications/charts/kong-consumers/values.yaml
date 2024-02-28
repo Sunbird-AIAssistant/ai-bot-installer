@@ -1,0 +1,69 @@
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: keshavprasad/kong-scripts
+  tag: "0.1.8"
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+kong_admin_url: kong
+kong_admin_port: 8001
+
+mobile_admin_groups: &mobile_admin_groups
+  - appRegister
+
+mobile_app_groups: &mobile_app_groups
+  - deviceRegister
+
+website_user_groups: &website_user_group
+  - telemetryMetric
+
+whatsapp_user_groups: &whatsapp_user_group
+  - telemetryCreate
+
+servetel_user_groups: &servetel_user_group
+  - ivrsMedia
+  - ivrsActivity
+  - telemetryCreate
+
+mobile_device_groups: &mobile_device_groups
+  - appCreate
+  - ssQuery
+  - asQuery
+  - suContext
+  - suTranslation
+  - ivrsActivity
+  - appRegister
+  - telemetryCreate
+  - configRead
+  - pageSearch
+  - contentSearch
+  - deviceRegister
+
+configmap:
+  enabled: true
+  mountPath: /config
+
+# global:
+#   random_string: randomstring123
+
+# You can add new consumers using this block
+# additional_consumers:
+#   - username: additional_sample_consumer_hs256
+#     groups: *anonymous_user_groups
+#     state: present
+#     key: additional_sample_consumer_hs256_key
+#     secret: additional_sample_consumer__hs256_secret
+#     algorithm: HS256
+#     print_credentials: true
+#   - username: additional_sample_consumer_rs256
+#     groups: *anonymous_user_groups
+#     state: present
+#     credential_iss: additional_sample_consumer_rs256_key
+#     credential_rsa_public_key: -----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtsYTZf6LONHPQnwpUzyY\nnB5sF5zIYJJ2eSvaCl6ByPNqsrKm/EIkpg3en1+LerB1EgRytofiVwqWJmG5aUqI\nAZ3CCiIaYG5LeJx/RNIJCmiFyC/tO9IRbTCCPfWvNOqtBixVUrq7jGi4FXNSbARN\ngx90ClggYeKiH6pdQmjuSUeJfFrswojk1+KPQBz2txcf5v0xuaJ9hT1a9hcCYzyf\n7APrASg+F6qq7WrHfzW9jCCACwE7NDBKyiwmSjkTSXddaQnGKncy7YpjwsYmK3lj\nbqzWephiXoMQpmONb3xST+OuoyO80hzeZeZHHRloB7R0e4vF/CfuSsV0VsgUKmJI\nOwIDAQAB\n-----END PUBLIC KEY-----
+#     credential_algorithm: RS256
+#     print_credentials: true
+
+provisioningAnnotations:
+  "helm.sh/hook": post-install,post-upgrade

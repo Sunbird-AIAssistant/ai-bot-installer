@@ -1,0 +1,8 @@
+global:
+  bucket_endpoint_url: "https://sbai-assistent-bucket.s3.ap-south-1.amazonaws.com"
+  bucket_region_name: "ap-south-1"
+  bucket_name: "sbai-assistent-bucket"
+  bucket_endpoint_arn: "arn:aws:s3:::sbai-assistent-bucket"
+  bucket_account_no: "058264287513"
+  bucket_secret_key: "vAd46BDllQNBx0JmrIBCbBxvdgSZf6wadKaJzTlJ"
+  bucket_access_key: "AKIAQ3EGSPEM7X3OD5C3"  

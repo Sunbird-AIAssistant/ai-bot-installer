@@ -1,0 +1,68 @@
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: keshavprasad/kong-scripts
+  tag: "0.1.8"
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+kong_admin_url: kong
+kong_admin_port: 8001
+
+statsd_pulgin:
+  name: statsd
+  config.host: "statsd-service"
+  config.port: "9125"
+  config.metrics:
+  - name: request_count
+    sample_rate: 1
+    stat_type: counter
+  - name: latency
+    stat_type: timer
+  - name: request_size
+    stat_type: timer
+  - name: status_count
+    sample_rate: 1
+    stat_type: counter
+  - name: response_size
+    stat_type: timer
+  - consumer_identifier: username
+    name: unique_users
+    stat_type: set
+  - consumer_identifier: username
+    name: request_per_user
+    sample_rate: 1
+    stat_type: counter
+  - name: upstream_latency
+    stat_type: timer
+  - name: kong_latency
+    stat_type: timer
+  - consumer_identifier: username
+    name: status_count_per_user
+    sample_rate: 1
+    stat_type: counter
+
+# Default Rate limits
+medium_rate_limit_per_hour: 5000
+
+# Default max request size in MB
+small_request_size_limit: 1
+
+# Service URLs
+story_sakhi_service_url: "http://storysakhi:8000"
+activity_sakhi_service_url: "http://activitysakhi:8080"
+sakhi_utility_service_url: "http://sakhiutility-service:8000"
+ivrs_service_url: "http://ivrs-service:8000"
+adminutil_service_url: "http://adminutil:4000"
+content_service_url: "http://content-service:3000"
+telemetry_service_url: "http://applications-sakhi-telegram-service:9001"
+unified_telegram_service_url: "http://applications-unifiedtelegram:8000"
+whatsapp_bot_service_url: "http://whatsapp-bot-service:3010"
+
+provisioningAnnotations:
+  "helm.sh/hook": post-install,post-upgrade
+
+configmap:
+  enabled: true
+  mountPath: /config

@@ -1,0 +1,230 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: proxy-default
+  namespace: {{ .Release.namespace }}
+data:
+  compression.conf: |
+    # Compression
+    gzip on;
+    gzip_comp_level    5;
+    gzip_min_length    256; # 256Bytes
+    gzip_proxied       any;
+    gzip_vary          on;
+    # Content types for compression
+    gzip_types
+    application/atom+xml
+    application/javascript
+    application/json
+    application/ld+json
+    application/manifest+json
+    application/rss+xml
+    application/vnd.geo+json
+    application/vnd.ms-fontobject
+    application/x-font-ttf
+    application/x-web-app-manifest+json
+    application/xhtml+xml
+    application/xml
+    font/opentype
+    image/bmp
+    image/svg+xml
+    image/x-icon
+    text/cache-manifest
+    text/css
+    text/plain
+    ;
+  proxy-default.conf: |
+    server {
+      listen 80;
+      listen [::]:80;
+      server_name {{ .Values.domain | default .Values.global.domain }};
+      # Limitting open connection per ip
+      limit_conn limitbyaddr 400;
+      return 301 https://{{ .Values.domain | default .Values.global.domain }}$request_uri;
+      }
+
+      server {
+      listen                443 ssl;
+      add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+      ssl_certificate       /etc/secrets/tls.crt;
+      ssl_certificate_key   /etc/secrets/tls.key;
+      ssl_protocols TLSv1.2 TLSv1.3;
+      ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA HIGH !RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS";
+      server_name {{ .Values.domain | default .Values.global.domain }};
+      # Limitting open connection per ip
+      limit_conn limitbyaddr 400;
+      proxy_set_header    Host              $host;
+      proxy_set_header    X-Real-IP         $remote_addr;
+      proxy_set_header    X-Forwarded-SSL   on;
+      proxy_set_header    X-Forwarded-Proto $scheme;
+      ignore_invalid_headers off;
+
+      location / {
+        root /usr/share/nginx/html;
+      }
+
+{{- if .Values.grafana.proxyenabled }}
+      location /grafana {
+        include /etc/nginx/defaults.d/compression.conf;
+        proxy_set_header Connection "";
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_pass http://prometheus-operator-grafana.monitoring.svc.cluster.local;
+      }
+{{- end }}
+
+{{- if .Values.static_website_service }}
+    location /dashboard {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_connect_timeout 5;
+        proxy_send_timeout 60;
+        proxy_read_timeout 70;
+        proxy_set_header    X-Forwarded-Proto $scheme;
+        proxy_set_header Connection "";
+        proxy_http_version 1.1;
+        proxy_set_header X-Request-ID $sb_request_id;
+        proxy_pass http://static-website-service:8080;
+      }
+{{- end}}
+
+      location /api/ {
+        if ($request_method = OPTIONS ) {
+            add_header Access-Control-Allow-Origin "*" ;
+            add_header Access-Control-Allow-Methods "GET, OPTIONS, PATCH, POST";
+            add_header Access-Control-Allow-Headers "Access-Control-Allow-Origin, Authorization, Content-Type, user-id, Content-Encoding";
+            add_header Content-Length 0;
+            add_header Content-Type text/plain;
+            return 200;
+        }
+        if ( $arg_eHVyhwSdt ) {
+          set $custom_header "Bearer $arg_eHVyhwSdt";
+        }
+        if ( $http_authorization ) {
+          set $custom_header "$http_authorization";
+        }
+        include /etc/nginx/defaults.d/compression.conf;
+        proxy_set_header Authorization $custom_header;
+        rewrite ^/api/(.*) /$1 break;
+        proxy_set_header Connection "";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_set_header    X-Forwarded-For   $remote_addr;
+        proxy_connect_timeout 5;
+        proxy_send_timeout 60;
+        proxy_read_timeout 70;
+        proxy_http_version 1.1;
+        proxy_set_header X-Request-ID $sb_request_id;
+        proxy_pass http://kong:8000;
+      }
+      }
+      {{- if .Values.dashboard_domain }}
+      server {
+      listen                443 ssl;
+      ssl_certificate       /etc/secrets/tls_dashboard.crt;
+      ssl_certificate_key   /etc/secrets/tls_dashboard.key;
+      ssl_protocols TLSv1.2 TLSv1.3;
+      ssl_ciphers "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA HIGH !RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS";
+      server_name {{ .Values.dashboard_domain }};
+      # Limitting open connection per ip
+      limit_conn limitbyaddr 400;
+      proxy_set_header    Host              $host;
+      proxy_set_header    X-Real-IP         $remote_addr;
+      proxy_set_header    X-Forwarded-SSL   on;
+      proxy_set_header    X-Forwarded-Proto $scheme;
+      ignore_invalid_headers off;
+      location / {
+        rewrite ^/(.*) /$1 break;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_connect_timeout 5;
+        proxy_send_timeout 60;
+        proxy_read_timeout 70;
+        proxy_set_header    X-Forwarded-Proto $scheme;
+        proxy_set_header Connection "";
+        proxy_http_version 1.1;
+        proxy_set_header X-Request-ID $sb_request_id;
+        proxy_pass http://superset:8088;
+      }
+      }
+      {{- end}}
+
+    
+---    
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-conf
+  namespace: {{ .Release.namespace }}
+data:    
+  nginx.conf: |    
+    user  nginx;
+    worker_processes  auto;
+    error_log  /var/log/nginx/error.log warn;
+    pid        /var/run/nginx.pid;
+    events {
+        worker_connections  10000;
+    }
+    http {
+        server_tokens off;
+        include       /etc/nginx/mime.types;
+        default_type  application/octet-stream;
+        log_format  main  '$remote_addr - $remote_user [$time_local] '
+                          '"$request" $status $request_length $body_bytes_sent'
+                          ' $request_time $upstream_response_time $pipe'
+                          ' "$http_referer" "$http_user_agent" "$sb_request_id"'
+                          ' "$http_x_device_id" "$http_x_channel_id" "$http_x_app_id"'
+                          ' "$http_x_app_ver" "$http_x_session_id" ';
+        access_log  /var/log/nginx/access.log  main;
+        # Shared dictionary to store metrics
+        # Defining request_id
+        # If the client send request_id it should be preffered over the default one
+        map $http_x_request_id $sb_request_id {
+          default  $http_x_request_id;
+          ''  $request_id;
+        }
+        # Defining upstream cache status for nginx metrics
+        map $upstream_cache_status $cache_status {
+          default  $upstream_cache_status;
+          ''       "NONE";
+        }
+        sendfile        on;
+        #tcp_nopush     on;
+        client_max_body_size 60M;
+        keepalive_timeout  65s;
+        keepalive_requests 200;
+        # Nginx connection limit per ip
+        limit_conn_zone $binary_remote_addr zone=limitbyaddr:10m;
+        limit_conn_status 429;
+        include /etc/nginx/defaults.d/*.conf;
+        include /etc/nginx/conf.d/*.conf;
+        #################
+        # Caching Block #
+        #################
+        #
+        # Keywords
+        #
+        # proxy_cache_path: path to store the cache content
+        # level: how many directories we need, 1:2 means 1 parent directory, and another child directory before the cache content.
+        # keys_zone: name of the cache and size of the keys store in RAM; 1‑MB zone can store data for about 8,000 keys
+        # max_size: size of the cache content in disk
+        # inactive: specifies how long an item can remain in the cache without being accessed. This doesn't value expiry time of cache. So keep it more than the expiry.
+        # use_temp_path: do we have to write the cache to a temp path first? This will reduce the performance.
+        #
+        # caching for images and files
+        proxy_cache_path /tmp/large_cache levels=1:2 keys_zone=large_cache:3m max_size=100m inactive=10m use_temp_path=off;
+        proxy_cache_path /tmp/medium_cache levels=1:2 keys_zone=medium_cache:2m max_size=50m inactive=10m use_temp_path=off;
+        proxy_cache_path /tmp/small_cache levels=1:2 keys_zone=small_cache:1m max_size=10m inactive=10m use_temp_path=off;
+
+       server {
+         listen 9145;
+         location /metrics {
+            stub_status on;
+         }
+       }
+      }
+

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "sunbird-tekdi",
+  "private_key_id": "34a8f59ba660bc452545494cb841cee5b8962907",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDPgOwLB7RurbKr\n1CdoK84C8WdUIaybBlLutzsaHunELj32VwmjqLGk1o/gZ9D3CJRBFMHeYJ6NXLJ+\n2bpnVDRBJmkOuNNgjXvuCFMQCraACf7GJJF3w0yYZmgotMqaE47RK+malpstmaCw\nlmTbnTKeGfcfHxPvhzDimr27rqKIgQymQDY1BYTL+pFiTBs1IIYaMwpW2J68GKgq\noYQsNshFxg4SZyQCsmSAt2HTod9GPJdNuH/EMZA6Ul2c0Zk4Au5k45ICYQ3G4TiJ\n/CKLINJsEPHg5cqpgqO1gFtM6IiftVAusRtW2J9ZlXxRxlLbK1EXhHUSW6lSBtcz\nbSUWc5XTAgMBAAECggEAB0akADcC8qaQj0nfH935WU0RrHeJz93G5qvyHJZc6A4f\nChY/NkfiAr+rR9kcEK1yVV3e9mc46AgKEjycNqdTNb2dDXEZqFcNs2kDUJqvj4nK\nLzR1DVgBxY5BtLuyJvjslxUNGeiSBGVQpyB+5Nx8O+L5MVQrpMh+xFNct8oF1Pdx\nPEh3pKFxhVSJYW/BTn2rBIczsYMc0cKd8C3obabsLhxHM7gRcB0tKTvQLMg+wvkL\n/QNRRgG/Nv1wN8e760/eNejBoYSYhd9b21kKGUASfstE9N3RlYB23iwkyJTex+H4\nif3LByX1l0PvwYp8gJYD+wUNN9oZhcrngdBujbsw0QKBgQD6OnMc1m3fAhKyI6GP\n/q26gFWV7rAQH49RlDRCOZHQLb7L7fdoM0fvm/NpJ/6010RhPQfwH6Nn9c7nGufr\nFfAPs4MyMNqJZMr7rjU7Xd9LTvp4MzrDXhp7AEd+6f1hG54lSxBpenLPhD1Gim/W\n6mPR4OzSDtRUG8/0pQ5Dl5kU3QKBgQDUSjDsPbgo7uJyExfbZOfSQ2Srzhy2LE6N\nTuyiBlLGEi83crivFxb8iNzEsPAVWrdEw3RfXrRX3YGLwsDw23gTTI/h547BmgYA\n2I7RiFz1+QUf37ZXWzhwKBNS1iVgeDK/gKqbec8ddHpoabvavCPllkhK5/olUj1s\nnRUXnkwSbwKBgQDGrBWtdcryXzD84zFppKnHBBHv4v1DL+uYt/TuB8tv4II2ZBAl\nWWHqKoYOncSrTKdsFQryagxRhGbsMv6kNlzN+pdWCFfa8n3/age1xQh/QIu5V+N2\nLocT1druN1YH/eeIcJrtRF1XygTktxGpL5xljRI6ja+jwBlSgqJapEjUuQKBgAKY\nOYrZokOVz9y3EQaUcCTov/U9mqo7VmZxvYCpdR+In10dINa7AIPrpE8fHoAUUMMd\nZHG59ZhRU8ECi1smQ4xw1h1buCnzmPkvrGcxNHmpJn/iOxdMPR9ZzgqoJWLNdUlT\n6EHoNjjU8J4QFMSyofmvYYjQ1wTXwXpvXQ+h1qovAoGBAMLGIHYkhCGEN/VodWYd\n7tAEweZSNi6fYmTUBEIPNvgUM/XsDsyMNx70av6Tu0zVe6JehzrrhxSbRcCJtOCQ\n1TBvrJz9EEWXfnQF7O+bBkTcTW4RCFLLI+ZZtcUL6nRI+n51aXTbhZkZ+/90LlrD\noSJO7ET7PxxvdJO/n1FAbYsc\n-----END PRIVATE KEY-----\n",
+  "client_email": "sunbird-ai-assistant@sunbird-tekdi.iam.gserviceaccount.com",
+  "client_id": "113763896014738012586",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/sunbird-ai-assistant%40sunbird-tekdi.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
