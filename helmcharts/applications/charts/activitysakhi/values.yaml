@@ -27,11 +27,12 @@ global:
   bucket_secret_key: ""
   bucket_access_key: ""
   marqo_url: ""
-  env: "dev"
-GCP_CONFIG_PATH: /config/gcp.json
-CONFIG_INI_PATH: /config/config.ini
-TELEMETRY_ENDPOINT_URL: ""
-TELEMETRY_LOG_ENABLED: false
+  env: ""
+gcp_config_path: "/config/gcp.json"
+config_ini_path: "/config/config.ini"
+telemetry_endpoint_url: ""
+telemetry_log_enabled: false
+log_level: "INFO"
 
 podAnnotations: {}
 commonAnnotations: 

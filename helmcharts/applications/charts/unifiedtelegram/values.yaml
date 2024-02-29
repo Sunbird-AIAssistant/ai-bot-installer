@@ -21,13 +21,14 @@ concurrent_updates: 256
 pool_timeout: 30
 connection_pool_size: 1000
 supported_languages: en,bn,gu,hi,kn,ml,mr,or,pa,ta,te
-telegram_base_url: ""
 uvicorn_workers: 4
 connect_timeout: 300
 read_timeout: 15
 write_time_out: 10
 activity_api_base_url: "http://activitysakhi:8080"
 story_api_base_url: "http://storysakhi-service:8000"
+telemetry_endpoint_url: "<>" 
+telemetry_log_enabled: "false" 
 
 
 redis: &redis
