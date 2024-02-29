@@ -29,7 +29,7 @@ global:
   marqo_url: ""
   env: "dev"
 GCP_CONFIG_PATH: /config/gcp.json
-CONFIG_INI_PATH: /config/gcp.json
+CONFIG_INI_PATH: /config/config.ini
 TELEMETRY_ENDPOINT_URL: ""
 TELEMETRY_LOG_ENABLED: false
 
