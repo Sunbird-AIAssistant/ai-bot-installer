@@ -6,7 +6,7 @@ replicaCount: 1
 image:
   repository: dubea/sakhi-api-service-main-sakhi-api
   tag: "main"
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   pullSecrets: []
 
 log_level: INFO
@@ -39,8 +39,8 @@ commonAnnotations:
   reloader.stakater.com/auto: "true"
 
 podSecurityContext:
-  runAsNonRoot: true
-  runAsUser: 1001
+  runAsNonRoot: false
+  runAsUser: 0
   fsGroup: 1001
 
 securityContext: {}
