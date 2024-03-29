@@ -9,7 +9,20 @@ There are the following pre-requisite to be completed before running install.sh 
 5. Register the domain, add the TXT records in DNS mappings and generate the certificates, private key, domain and add that in the global-values.yaml file. 
 6. Please note, global-cloud-values.yaml will be auto-generated during installation with terraform in the path ./helmcharts. if you have any file name as global-cloud-values.yml file in the same path please remove it.
 
-Once ready with above details,  run the installation script (install_on_aws.sh).
+Once ready with above details,  run the installation script (install_on_aws.sh) it will run the below pods :
+1. activitysakhi
+2. applications-unifiedtelegram
+3. kong
+4. marqo
+5. postgres
+6. redis
+7. nginx-public-ingress
+
+and complete the below migrations and installations :
+1. kong-api
+2. kong-consumer
+3. kong-migrations
+4. postgres-provision-postgres-migration
 
 Once all the provisioning completed, login to cloud account and map the loadbalancer DNS with the domain name in the DNS mappings in CNAME records.
 
