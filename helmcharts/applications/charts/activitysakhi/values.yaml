@@ -31,8 +31,6 @@ global:
 gcp_config_path: "/config/gcp.json"
 config_ini_path: "/config/config.ini"
 telemetry_endpoint_url: ""
-telemetry_log_enabled: false
-log_level: "INFO"
 
 podAnnotations: {}
 commonAnnotations: 
