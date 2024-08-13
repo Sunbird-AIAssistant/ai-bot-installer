@@ -15,7 +15,7 @@ global:
   ##   - myRegistryKeySecretName
   ##
   imagePullSecrets: []
-  storageClass: ""
+  storageClass: "gp2"
   ## @param global.postgresql.postgresqlDatabase PostgreSQL database (overrides `postgresqlDatabase`)
   ## @param global.postgresql.postgresqlUsername PostgreSQL username (overrides `postgresqlUsername`)
   ## @param global.postgresql.existingSecret Name of existing secret to use for PostgreSQL passwords (overrides `existingSecret`)
