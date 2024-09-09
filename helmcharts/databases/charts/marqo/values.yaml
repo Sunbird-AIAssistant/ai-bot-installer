@@ -112,3 +112,4 @@ opa:
 
 persistence:
   size: 10Gi
+  storageClass: "gp2"
