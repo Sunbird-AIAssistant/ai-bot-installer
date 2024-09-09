@@ -1,5 +1,5 @@
 resource "aws_iam_role" "nodes" {
-  name = "eks-node-group-nodes"
+  name = "sbai-eks-node-group-nodes"
 
   assume_role_policy = jsonencode({
     Statement = [{

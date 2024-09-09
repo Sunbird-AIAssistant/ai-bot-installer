@@ -25,6 +25,7 @@ resource "aws_iam_role_policy_attachment" "sbai_amazon_eks_cluster_policy" {
 resource "aws_eks_cluster" "sbai" {
   name     = "sbai"
   role_arn = aws_iam_role.sbai.arn
+  version  = "1.30"
 
   vpc_config {
     subnet_ids = [

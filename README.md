@@ -49,10 +49,11 @@ Run the following:
 Copy
 Step 1: pip install -r requirements-dev.txt 
 Step 2: python3 index_documents.py --folder_path=<PATH_TO_INPUT_FILE_DIRECTORY> --fresh_index --chunk_size=1024 --chunk_overlap=100
-
+```
 # --fresh_index: Create a new index from scratch.
 # --chunk_size: Divide the documents into chunks of 1024 characters. Default: 1024
 # --chunk_overlap: Overlap each chunk by 100 characters for context. Default: 100
+```
 Before Release 3.0.0
 Install Python on the machine where the files need to be ingested.
 
