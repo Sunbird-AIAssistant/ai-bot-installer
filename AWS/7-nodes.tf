@@ -28,43 +28,6 @@ resource "aws_iam_role_policy_attachment" "nodes_amazon_ec2_container_registry_r
   role       = aws_iam_role.nodes.name
 }
 
-resource "aws_eks_node_group" "private_nodes" {
-  cluster_name    = aws_eks_cluster.sbai.name
-  node_group_name = "private-nodes"
-  node_role_arn   = aws_iam_role.nodes.arn
-
-  subnet_ids = [
-    aws_subnet.private_ap_south_1a.id,
-    aws_subnet.private_ap_south_1b.id
-  ]
-
-  capacity_type  = "ON_DEMAND"
-  instance_types = ["t3.medium"]
-
-  scaling_config {
-    desired_size = 1
-    max_size     = 5
-    min_size     = 0
-  }
-
-  update_config {
-    max_unavailable = 1
-  }
-
-   tags = {
-    Name = "sbrc-ai-services"
-  }
-
-  labels = {
-    role = "sbrc-ai"
-  }
-
-  depends_on = [
-    aws_iam_role_policy_attachment.nodes_amazon_eks_worker_node_policy,
-    aws_iam_role_policy_attachment.nodes_amazon_eks_cni_policy,
-    aws_iam_role_policy_attachment.nodes_amazon_ec2_container_registry_read_only,
-  ]
-}
 
 resource "aws_eks_node_group" "large_nodes" {
   cluster_name    = aws_eks_cluster.sbai.name
@@ -72,16 +35,16 @@ resource "aws_eks_node_group" "large_nodes" {
   node_role_arn   = aws_iam_role.nodes.arn
 
   subnet_ids = [
-    aws_subnet.private_ap_south_1a.id,
-    aws_subnet.private_ap_south_1b.id
+    aws_subnet.public_ap_south_1a.id,
+    aws_subnet.public_ap_south_1b.id
   ]
 
   capacity_type  = "ON_DEMAND"
-  instance_types = ["t3a.xlarge"]
+  instance_types = ["m4.xlarge"]
 
   scaling_config {
-    desired_size = 1
-    max_size     = 5
+    desired_size = 2
+    max_size     = 3
     min_size     = 0
   }
 
